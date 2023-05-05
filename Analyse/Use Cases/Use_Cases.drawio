@@ -1,0 +1,127 @@
+<mxfile host="app.diagrams.net" modified="2023-05-02T12:13:49.105Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="4r-oV_xd7eCMPYE3wpt3" version="21.1.1" type="device">
+  <diagram name="Page-1" id="sqySsMh5hggU9PLW38Wb">
+    <mxGraphModel dx="1793" dy="924" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="OmRXST0jG2Kcps19nw_L-1" value="Visiteur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="220" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-2" value="" style="endArrow=none;html=1;rounded=0;entryX=0.217;entryY=0.925;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="OmRXST0jG2Kcps19nw_L-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="330" y="200" as="sourcePoint" />
+            <mxPoint x="390" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-3" value="Voir les postes récents sur la page d&#39;accueil" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-4" value="Créer un compte" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="100" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-5" value="Se connecter à son compte" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="325" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-6" value="" style="endArrow=none;html=1;rounded=0;exitX=0.667;exitY=0.975;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="210" as="sourcePoint" />
+            <mxPoint x="240" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-7" value="" style="endArrow=none;html=1;rounded=0;exitX=0.279;exitY=0.047;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="350" as="sourcePoint" />
+            <mxPoint x="340" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-8" value="Filtrer les postes par thèmes" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="325" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-11" value="" style="endArrow=none;html=1;rounded=0;exitX=0.829;exitY=0.044;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="181" y="232" as="sourcePoint" />
+            <mxPoint x="240" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-12" value="Utilisateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1068" y="210" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-13" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" target="OmRXST0jG2Kcps19nw_L-14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1038" y="205" as="sourcePoint" />
+            <mxPoint x="1188" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-14" value="Créer un nouveau poste" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="912" y="85" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-15" value="Commenter sous un poste / commentaire" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1148" y="95" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-16" value="Signaler un &lt;br&gt;poste / &lt;br&gt;commentaire" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1178" y="335" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-17" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1148" y="200" as="sourcePoint" />
+            <mxPoint x="1128" y="205" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-18" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1158" y="210" as="sourcePoint" />
+            <mxPoint x="1128" y="295" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-19" value="Voir l&#39;emsemble de ses postes publiés" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="335" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-20" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="979" y="222" as="sourcePoint" />
+            <mxPoint x="1028" y="295" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-21" value="Administrateur" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="870" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-22" value="" style="endArrow=none;html=1;rounded=0;entryX=0.807;entryY=0.101;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="OmRXST0jG2Kcps19nw_L-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="960" as="sourcePoint" />
+            <mxPoint x="150" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-23" value="Bloquer un utilisateur" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="93" y="986" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-24" value="Ajouter des thèmes" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="114" y="750" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-25" value="Historiser un poste" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="982" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-26" value="" style="endArrow=none;html=1;rounded=0;exitX=0.708;exitY=0.97;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-24">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="860" as="sourcePoint" />
+            <mxPoint x="250" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-27" value="" style="endArrow=none;html=1;rounded=0;exitX=0.097;exitY=0.216;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-25">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="870" as="sourcePoint" />
+            <mxPoint x="330" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-28" value="Bloquer un poste" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="760" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="OmRXST0jG2Kcps19nw_L-29" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="OmRXST0jG2Kcps19nw_L-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="181" y="882" as="sourcePoint" />
+            <mxPoint x="330" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
