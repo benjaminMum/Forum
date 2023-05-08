@@ -1,0 +1,48 @@
+<?php
+function renderGabarit($title = null, $content = null)
+{
+?>
+    <!DOCTYPE html>
+    <html lang="fr" class="h-100">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+            <link href="./view/css/output.css" rel="stylesheet">
+            <title>
+                <?= $title ?>
+            </title>
+
+        </head>
+
+        <body class="bg-cyan-50 bg-cover h-screen">
+            <!-- navbar -->
+            <div class="h-11">
+                <div class="navbar bg-base-100 w-screen static object-right h-1/6">
+                    <a class="btn btn-ghost normal-case text-xl static" href="/indexp.php?action=home">Home</a>
+                    <!-- account buttons -->
+                    <div class="static justify-end w-full">
+                        <?php if(empty($_SESSION)) { ?>
+                        <a class="btn btn-ghost normal-case text-xl relative right-5" href="/indexp.php?action=login">Se connecter</a>
+                        <a class="btn btn-ghost normal-case text-xl static" href="/indexp.php?action=register">S'enregistrer</a>
+                        <?php } else { ?>
+                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/disconnect">Déconnexion</a> 
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page content -->
+            <div class="flex justify-center mt-10">
+                <?php /** Content defined in views */?>
+                <?= $content ?? "<h1>Contenu indisponible</h1>" ?>
+            </div>
+
+
+        </body>
+    </html>
+    <?php
+    // This '}' Closes the function renderGabarit()
+}
+?>
