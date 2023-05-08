@@ -9,12 +9,11 @@ function home() {
 
 function register($registerData) {
     require_once "view/register.php";
-
-    
+    require_once "model/userManager.php";
 
     $testsPassed = false;
 
-    // Regex to check if email is valid
+    //regex to verify if the email is correctly formated
     $exp = "/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i";
 
     //form data verification
@@ -41,8 +40,6 @@ function register($registerData) {
         $testsPassed = true;
     }
 
-
-
     if($registerData != NULL) {
         if($testsPassed) {
             if(addUserInDB($registerData)) {
@@ -61,5 +58,36 @@ function register($registerData) {
     } else {
         view_register();
     }
-    
+}
+
+function login($loginData, $token) {
+    require_once "view/login.php";
+    require_once "model/userManager.php";
+
+    if($loginData != null) {
+        if(loginIsCorrect($loginData)) {
+            $email = $loginData['formLoginEmail'];
+            //check if account is confirmed
+            if(accountIsConfirmed($email)) {
+                $_SESSION['email'] = $email;
+                $_SESSION['admin'] = getUserRights($email);
+                header("location:/index.php?action=home");
+            } else {
+                if($token != null) {
+                    if(confirmAccount($email, $token)) {
+                        //redirect to home with session
+                    } else {
+                        view_login();
+                    }
+                } 
+                else {
+                    // message : account not confirmed...
+                }
+            }
+        } else {
+            view_login("Données incorrectes");
+        }
+    } else {
+        view_login();
+    }
 }

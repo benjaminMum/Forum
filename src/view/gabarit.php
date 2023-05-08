@@ -24,8 +24,8 @@ function renderGabarit($title = null, $content = null)
                     <!-- account buttons -->
                     <div class="static justify-end w-full">
                         <?php if(empty($_SESSION)) { ?>
-                        <a class="btn btn-ghost normal-case text-xl relative right-5" href="/indexp.php?action=login">Se connecter</a>
-                        <a class="btn btn-ghost normal-case text-xl static" href="/indexp.php?action=register">S'enregistrer</a>
+                        <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=login">Se connecter</a>
+                        <a class="btn btn-ghost normal-case text-xl static" href="/index.php?action=register">S'enregistrer</a>
                         <?php } else { ?>
                             <a class="btn btn-ghost normal-case text-xl relative right-5" href="/disconnect">Déconnexion</a> 
                         <?php } ?>

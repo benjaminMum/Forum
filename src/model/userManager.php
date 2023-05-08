@@ -56,5 +56,63 @@ function sendConfirmationMail($email) {
 
 #endregion
 
+#region Login
 
+function loginIsCorrect($loginData) {
+    $email = $loginData['formLoginEmail'];
+    $password = $loginData['formLoginPassword'];
+
+    $query = "SELECT `password` FROM `users` WHERE `email` = '$email';";
+
+    $hashedPassword = executeQuerySelect($query);
+    
+    if($hashedPassword != null) {
+        return password_verify($password, $hashedPassword);
+    } else {
+        return false;
+    }
+}
+
+function confirmAccount($email, $token) {
+
+    $token_query = "SELECT `register_token` FROM `users` WHERE `email` = '$email';";
+    $dbtoken = executeQuerySelect($token_query);
+
+    if($dbtoken == $token) {
+
+    }
+    
+}
+
+function accountIsConfirmed($email) {
+    $query = "SELECT `confirmed` FROM `users` WHERE `email` = '$email';";
+    $result = executeQuerySelect($query);
+
+    if($result != null) {
+        if($result == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getUserRights($email) {
+    $query = "SELECT `admin` FROM `users` WHERE `email` = '$email';";
+    $result = executeQuerySelect($query);
+
+    if($result != null) {
+        if($result == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+#endregion
 

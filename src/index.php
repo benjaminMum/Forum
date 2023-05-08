@@ -16,6 +16,9 @@ if(isset($action)) {
         case 'register':
             register($_POST);
             break;
+        case 'login':
+            login($_POST, $_GET['token']);
+            break;
         default:
             home();
     }
