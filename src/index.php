@@ -13,7 +13,9 @@ if(isset($action)) {
         case 'home':
             home();
             break;
-
+        case 'register':
+            register($_POST);
+            break;
         default:
             home();
     }
