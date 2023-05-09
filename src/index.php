@@ -22,6 +22,9 @@ if(isset($action)) {
         case 'disconnect':
             disconnect();
             break;
+        case 'newpost':
+            newPost($_POST);
+            break;
         default:
             home();
     }

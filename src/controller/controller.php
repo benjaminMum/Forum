@@ -5,6 +5,8 @@ function home() {
     view_home();
 }
 
+#region User
+
 function register($registerData) {
     require_once "view/register.php";
     require_once "model/userManager.php";
@@ -98,3 +100,20 @@ function disconnect() {
     header("location:/home");
 }
 
+#endregion
+
+
+#region Post
+
+function newPost($formData) {
+    require_once "view/newPost.php";
+    require_once "model/postManager.php";
+
+    if($formData != null) {
+        
+    } else {
+        view_newpost();
+    }
+}
+
+#endregion
