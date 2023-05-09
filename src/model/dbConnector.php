@@ -50,9 +50,9 @@ function openDBConnexion()
     $hostname = 'localhost';
     $port = 3306;
     $charset = 'utf8';
-    $dbName = 'tdf_db';
+    $dbName = 'forum_db';
     $userName = 'root';
-    $userPwd = 'JsuenqvaV-1515';
+    $userPwd = '';
     $dsn = $sqlDriver . ':host=' . $hostname . ';dbname=' . $dbName . ';port=' . $port . ';charset=' . $charset;
 
     try {

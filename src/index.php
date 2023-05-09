@@ -17,7 +17,10 @@ if(isset($action)) {
             register($_POST);
             break;
         case 'login':
-            login($_POST, $_GET['token']);
+            login($_POST);
+            break;
+        case 'disconnect':
+            disconnect();
             break;
         default:
             home();

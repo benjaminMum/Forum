@@ -8,6 +8,14 @@
 
 <div class="w-1/2 mt-10 ">
     <h1 class="text-3xl text-center text-black">S'enregistrer</h1>
+    <?php if($err != null) { ?>
+        <div class="alert alert-error shadow-lg mt-5">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span><?= $err ?></span>
+            </div>
+        </div>
+    <?php } ?>
     <div class="divider before:bg-primary after:bg-primary"></div>
     <form action="/index.php?action=register" method="POST">
         <div class="grid grid-cols-2 grid-flow-row mt-5">
@@ -44,7 +52,7 @@
     require_once "view/gabarit.php";
     renderGabarit($title, $content);
 
-    // Closes the function view_home()
+    // Closes the function view_register()
     }
 
 ?>

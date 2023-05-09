@@ -32,12 +32,12 @@ function addUserInDB($registerData) {
     //hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     //generate a 20 character long token for account confirmation
-    $bytes = random_bytes(20);
+    $bytes = random_bytes(10);
     $token = bin2hex($bytes);
 
     
     $query = "INSERT INTO `users` (email, username, password, register_token, admin, banned, confirmed) " . 
-             "VALUES ('$email', '$username','$hashedPassword', $token, 0, 0, 0);";
+             "VALUES ('$email', '$username','$hashedPassword', '$token', 0, 0, 0);";
 
     $confirm = executeQueryIUD($query);
 
@@ -67,7 +67,7 @@ function loginIsCorrect($loginData) {
     $hashedPassword = executeQuerySelect($query);
     
     if($hashedPassword != null) {
-        return password_verify($password, $hashedPassword);
+        return password_verify($password, $hashedPassword[0][0]);
     } else {
         return false;
     }
@@ -78,9 +78,16 @@ function confirmAccount($email, $token) {
     $token_query = "SELECT `register_token` FROM `users` WHERE `email` = '$email';";
     $dbtoken = executeQuerySelect($token_query);
 
-    if($dbtoken == $token) {
+    $passed = false;
 
+    if($dbtoken[0][0] == $token) {
+        $query = "UPDATE `users` SET `confirmed` = 1 WHERE `email` = '$email'";
+        if(executeQueryIUD($query)) {
+            $passed = true;
+        }
     }
+
+    return $passed;
     
 }
 
@@ -89,7 +96,7 @@ function accountIsConfirmed($email) {
     $result = executeQuerySelect($query);
 
     if($result != null) {
-        if($result == 0) {
+        if($result[0][0] == 0) {
             return false;
         } else {
             return true;
@@ -104,7 +111,7 @@ function getUserRights($email) {
     $result = executeQuerySelect($query);
 
     if($result != null) {
-        if($result == 0) {
+        if($result[0][0] == 0) {
             return false;
         } else {
             return true;

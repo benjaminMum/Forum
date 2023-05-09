@@ -1,7 +1,5 @@
 <?php
 
-
-
 function home() {
     require_once "view/home.php";
     view_home();
@@ -14,7 +12,7 @@ function register($registerData) {
     $testsPassed = false;
 
     //regex to verify if the email is correctly formated
-    $exp = "/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i";
+    $exp = "/^\S+@\S+\.\S+$/i";
 
     //form data verification
     if(in_array("", $registerData)) {
@@ -43,14 +41,14 @@ function register($registerData) {
     if($registerData != NULL) {
         if($testsPassed) {
             if(addUserInDB($registerData)) {
-                if(sendConfirmationMail($registerData['formRegisterEmail'])) {
+                //if(sendConfirmationMail($registerData['formRegisterEmail'])) {
                     $_SESSION['email'] = $registerData['formRegisterEmail'];
                     $_SESSION['admin'] = false;
                     $_SESSION['newAccount'] = true;
                     // Refreshes the page to display the "Check your mailbox" message
                     // The page will not display the form because the $_SESSION['newAccount'] is set
                     header("location:/index.php?action=register");
-                }
+                //}
             }
         } else {
             view_register($err);
@@ -60,7 +58,7 @@ function register($registerData) {
     }
 }
 
-function login($loginData, $token) {
+function login($loginData) {
     require_once "view/login.php";
     require_once "model/userManager.php";
 
@@ -73,15 +71,18 @@ function login($loginData, $token) {
                 $_SESSION['admin'] = getUserRights($email);
                 header("location:/index.php?action=home");
             } else {
-                if($token != null) {
-                    if(confirmAccount($email, $token)) {
-                        //redirect to home with session
+                if($loginData['token'] != null) {
+                    if(confirmAccount($email, $loginData['token'])) {
+                        $_SESSION['email'] = $email;
+                        $_SESSION['admin'] = getUserRights($email);
+                        header("location:/index.php?action=home");
                     } else {
-                        view_login();
+                        view_login("Votre jeton d'identification est incorrect.");
                     }
                 } 
                 else {
-                    // message : account not confirmed...
+                    // todo : rewrite the message
+                    view_login("Votre compte n'a pas été confirmé");
                 }
             }
         } else {
@@ -91,3 +92,9 @@ function login($loginData, $token) {
         view_login();
     }
 }
+
+function disconnect() {
+    session_destroy();
+    header("location:/home");
+}
+

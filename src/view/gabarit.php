@@ -20,14 +20,14 @@ function renderGabarit($title = null, $content = null)
             <!-- navbar -->
             <div class="h-11">
                 <div class="navbar bg-base-100 w-screen static object-right h-1/6">
-                    <a class="btn btn-ghost normal-case text-xl static" href="/indexp.php?action=home">Home</a>
+                    <a class="btn btn-ghost normal-case text-xl static" href="/index.php?action=home">Home</a>
                     <!-- account buttons -->
                     <div class="static justify-end w-full">
                         <?php if(empty($_SESSION)) { ?>
                         <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=login">Se connecter</a>
                         <a class="btn btn-ghost normal-case text-xl static" href="/index.php?action=register">S'enregistrer</a>
                         <?php } else { ?>
-                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/disconnect">Déconnexion</a> 
+                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=disconnect">Déconnexion</a> 
                         <?php } ?>
                     </div>
                 </div>
