@@ -106,7 +106,7 @@ function accountIsConfirmed($email) {
     }
 }
 
-function getUserRights($email) {
+function IsUserAdmin($email) {
     $query = "SELECT `admin` FROM `users` WHERE `email` = '$email';";
     $result = executeQuerySelect($query);
 
@@ -123,3 +123,8 @@ function getUserRights($email) {
 
 #endregion
 
+function getIdOfUser($email) {
+    $query = "SELECT `id` FROM `users` WHERE `email` = '$email';";
+    $result = executeQuerySelect($query);
+    return $result[0]['id'];
+}
