@@ -11,7 +11,7 @@ if(isset($action)) {
     // Routing
     switch ($action) {
         case 'home':
-            home();
+            home($_GET['page']);
             break;
         case 'register':
             register($_POST);
@@ -26,9 +26,9 @@ if(isset($action)) {
             newPost($_POST);
             break;
         default:
-            home();
+            home($_GET['page']);
     }
 } else {
-    home();
+    home($_GET['page']);
 }
 

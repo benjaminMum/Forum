@@ -1,8 +1,12 @@
 <?php
 
-function home() {
+function home($page) {
     require_once "view/home.php";
-    view_home();
+    require_once "model/postManager.php";
+
+    $posts = GetRecentPosts($page);
+    view_home($posts);
+    
 }
 
 #region Users

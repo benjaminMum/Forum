@@ -3,6 +3,29 @@
 require_once "model/dbConnector.php";
 require_once "model/fileManager.php";
 
+function getMaxPageNumber($page) {
+    // Gets the number of posts
+    $numberOfRows = executeQuerySelect("SELECT COUNT(`id`) FROM `posts`;");
+    // Calulates the maximum number of pages needed to display all the posts
+    return ceil($numberOfRows[0][0] / 10);
+}
+
+function GetRecentPosts($page) {
+    // Verifies if the page given in GET is in the range
+    $pagesRange = range(1, getMaxPageNumber($page));
+    if (in_array($page, $pagesRange) == false) {
+        $page = 1;
+    }
+
+    // Calculates the offset to know wich posts to display per page
+    // Ex : if $page=1 -> offset = 0 (will display posts 1-10 in the order of the most recent)
+    //      if $page=2 -> offset = 10 (will display posts 11-20 in the order of the most recent)
+    $offset = (int)$page * 10 - 10;
+
+    $query = "SELECT * FROM `posts` ORDER BY `date` DESC LIMIT 10 OFFSET $offset;";
+    return executeQuerySelect($query);
+}
+
 function createPost($formData, $userId, $file=null) {
 
     $passed = false;
