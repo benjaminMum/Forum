@@ -53,6 +53,34 @@ function createPost($formData, $userId, $file=null) {
     return executeQueryIUD($query);
 }
 
+function postIsOpen($postId) {
+    $query = "SELECT `closed` FROM `posts` WHERE `id` = '$postId';";
+    $result = executeQuerySelect($query);
+
+    if($result[0]['closed'] == 1) {
+        return true;
+    } else {
+        return false;
+    }
+} 
+
+function postExists($postId) {
+    $query = "SELECT `title` FROM `posts` WHERE `id` = '$postId';";
+    $result = executeQuerySelect($query);
+
+    if($result == null) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function getPostById($postId) {
+    $query = "SELECT * FROM `posts` WHERE `id` = '$postId';";
+    $result = executeQuerySelect($query);
+    return $result;
+}
+
 #region Categories
 
 

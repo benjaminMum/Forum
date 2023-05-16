@@ -128,3 +128,9 @@ function getIdOfUser($email) {
     $result = executeQuerySelect($query);
     return $result[0]['id'];
 }
+
+function getUsernameById($id) {
+    $query = "SELECT `username` FROM `users` WHERE `id` = '$id';";
+    $result = executeQuerySelect($query);
+    return $result[0]['username'];
+}

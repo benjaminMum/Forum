@@ -137,7 +137,13 @@ function newPost($formData) {
         } 
         else if(($_FILES['formNewpostFile']['name']==null xor $formData['formNewpostLink']==null) == false) {
             $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
+        }
+        else if(str_contains($formData['formNewpostLink'], "youtube.com") == false && $_FILES['formNewpostFile']['name']==null) {
+            $err = "Veuillez utiliser un lien de vidéo youtube";
         } 
+        else if (strlen($formData['formNewpostLink']) > 45) {
+            $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
+        }
         else {
             $testsPassed = true;
         }
@@ -155,6 +161,31 @@ function newPost($formData) {
         }
     } else {
         view_newpost(null, $categories);
+    }
+}
+
+function post($postId) {
+    require_once "view/post.php";
+    require_once "model/postManager.php";
+    require_once "model/userManager.php";
+
+    if(postExists($postId) == false) {
+
+    } else if(postIsOpen($postId) == false) {
+        
+    }
+
+}
+
+function commentPost($commentData, $postId) {
+    require_once "view/view_commentPost.php";
+    require_once "model/postManager.php";
+    require_once "model/userManager.php";
+
+    if($commentData =! null) {
+
+    } else {
+
     }
 }
 
