@@ -1,5 +1,5 @@
 <?php 
-    function view_post($post) {
+    function view_post($post, $comments) {
         ob_start();
         $title = "Post";
 
@@ -20,8 +20,8 @@
             </div>
             <div class="grid grid-cols-12 grid-row-6 col-span-10 row-span-5 bg-slate-300">
                 <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
-                <p class=" text-black col-span-12 row-span-4 ml-2">text-lg text-black col-span-12</p>
-                <button class="btn col-span-1 col-start-12 mr-2 btn-sm" >test</button>
+                <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
+                <button class="btn col-span-1 col-start-12 mr-2 btn-sm" href="index.php/commentPost?id=<?=$post['id']?>">Commenter</button>
             </div>
         </div>
     <?php } else { ?>
@@ -36,11 +36,13 @@
             </div>
             <div class="grid grid-cols-12 grid-row-6 col-span-10 row-span-4 bg-slate-300">
                 <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
-                <p class=" text-black col-span-12 row-span-4 ml-2">text-lg text-black col-span-12</p>
-                <button class="btn col-span-1 col-start-12 mr-2 btn-sm" >Voir</button>
+                <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
+                <button class="btn col-span-1 col-start-12 mr-2 btn-sm" href="index.php/commentPost?id=<?=$post['id']?>">Commenter</button>
             </div>
         </div>
     <?php } ?>
+
+
 
 </div>
 

@@ -5,12 +5,6 @@
 
 ?>
 
-<script>
-
-
-
-</script>
-
 <?php if($_SESSION != NULL) {?>
 
 <div class="w-1/2 mt-10">
@@ -72,6 +66,7 @@
 
 <?php } else { // you are not connected... ?>
 
+        
 
 <?php } ?>
 

@@ -164,6 +164,7 @@ function newPost($formData) {
     }
 }
 
+// View post in with its comments
 function post($postId) {
     require_once "view/post.php";
     require_once "model/postManager.php";
@@ -178,14 +179,46 @@ function post($postId) {
 }
 
 function commentPost($commentData, $postId) {
-    require_once "view/view_commentPost.php";
+    require_once "view/lost.php";
+    require_once "view/commentPost.php";
     require_once "model/postManager.php";
     require_once "model/userManager.php";
+    require_once "model/commentManager.php";
+    
+    $postData = getPostById($postId)[0];
 
-    if($commentData =! null) {
+    if($postData != null) {
+        if($commentData != null) {
 
+            $testsPassed = false;
+    
+            if(strlen($commentData['formCommentPostComment']) > 2000) {
+                $err = "Votre commentaire dépasse les 2000 charactères";
+            } 
+            else if(($_FILES['formCommentPostFile']['name']==null xor $commentData['formCommentPostLink']==null) == false) {
+                $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
+            }
+            else if(str_contains($commentData['formCommentPostLink'], 'youtube.com') == false && $_FILES['formCommentPostFile']['name']==null) {
+                $err = "Veuillez utiliser un lien de vidéo youtube";
+            } 
+            else if (strlen($commentData['formCommentPostLink']) > 45) {
+                $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
+            }
+            else {
+                $testsPassed = true;
+            }
+
+            if($testsPassed == true) {
+                addCommentToPost($commentData, $postData['user_id'], $postData['id'], $_FILES['formCommentPostFile']);
+                header("location:/index.php?action=post&id=" . $postData['id']);
+            } else {
+                view_commentPost($postData, $err);
+            }
+        } else {
+            view_commentPost($postData);
+        }
     } else {
-
+        view_lost();
     }
 }
 

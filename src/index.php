@@ -27,7 +27,7 @@ if(isset($action)) {
             break;
         case 'post':
             post($_GET['id']);
-        case 'comment';
+        case 'commentPost';
             commentPost($_POST, $_GET['id']);
             break;
         default:

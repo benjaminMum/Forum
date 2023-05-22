@@ -16,7 +16,7 @@ function renderGabarit($title = null, $content = null)
 
         </head>
 
-        <body class="bg-cyan-50 bg-cover h-screen">
+        <body class="bg-cyan-50 min-h-screen">
             <!-- navbar -->
             <div class="h-11">
                 <div class="navbar bg-base-100 w-screen static object-right h-1/6">

@@ -27,9 +27,6 @@ function GetRecentPosts($page) {
 }
 
 function createPost($formData, $userId, $file=null) {
-
-    $passed = false;
-
     $category = $formData['formNewpostCategory'];
     $title = $formData['formNewpostTitle'];
     // Adds 2 hours to get to utc+2
