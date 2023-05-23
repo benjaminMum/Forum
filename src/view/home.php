@@ -6,16 +6,18 @@
         require_once "model/userManager.php";
 ?>
 
-<?php if($_SESSION != NULL) {?>
+
 <div class="grid grid-cols-12">
+    <?php if($_SESSION != NULL) {?>
     <a class="btn col-start-10 mb-5" href="/index.php?action=newpost">Nouveau post</a>
+    <?php }?>
 
     <?php foreach($posts as $post) { ?>
         <?php if(str_contains($post['image_link'], "./view")) {?>
             <div class="divider col-span-9 col-start-2"></div> 
             <div class="grid grid-cols-12 col-span-5 col-start-4 grid-rows-6 gap-1 h-48">
-                <div class="col-span-4 row-span-6 bg-slate-500 rounded-md">
-                    <img class="object-scale-down" src="<?= $post['image_link']?>">
+                <div class="col-span-4 row-span-6 bg-cyan-50 rounded-md flex flex-col">
+                    <img class="w-full object-contain min-h-0" src="<?= $post['image_link']?>">
                 </div> 
                 <div class="grid grid-cols-3 col-span-8 row-span-1 mb-1 bg-slate-300 rounded-md">
                     <p class="text-left col-span-1 text-black ml-2">Utilisateur : <?= getUsernameById($post['user_id']) ?> </p>
@@ -24,7 +26,7 @@
                 <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                     <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                     <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
-                    <button class="btn col-span-2 col-start-11 mr-2 btn-sm" >Voir</button>
+                    <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
                 </div>
             </div>
         <?php } else { ?>
@@ -40,7 +42,7 @@
                 <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                     <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                     <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
-                    <button class="btn col-span-2 col-start-11 mr-2 btn-sm" >Voir</button>
+                    <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
                 </div>
             </div>
         <?php } ?>
@@ -50,7 +52,7 @@
 
 
 
-<?php }?>
+
 
 <?php
 

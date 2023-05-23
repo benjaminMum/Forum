@@ -55,9 +55,9 @@ function postIsOpen($postId) {
     $result = executeQuerySelect($query);
 
     if($result[0]['closed'] == 1) {
-        return true;
-    } else {
         return false;
+    } else {
+        return true;
     }
 } 
 

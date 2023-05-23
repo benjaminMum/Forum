@@ -22,3 +22,8 @@ function addCommentToPost($formData, $userID, $postID, $file=null) {
 
     return executeQueryIUD($query);
 }
+
+function getAllCommentsOfPost($postID) {
+    $query = "SELECT * FROM comments WHERE post_id = '$postID' OR comment_id IN ( SELECT id FROM comments WHERE post_id = '$postID');";
+    return executeQuerySelect($query);
+}

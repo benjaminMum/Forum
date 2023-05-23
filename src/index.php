@@ -27,11 +27,13 @@ if(isset($action)) {
             break;
         case 'post':
             post($_GET['id']);
+            break;
         case 'commentPost';
             commentPost($_POST, $_GET['id']);
             break;
         default:
             home($_GET['page']);
+            break;
     }
 } else {
     home($_GET['page']);

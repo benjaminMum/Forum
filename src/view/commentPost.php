@@ -6,12 +6,12 @@
 ?>
 
 <div class="w-1/2 mt-10">
-
+<?php if($_SESSION != NULL) {?>
 <?php if(str_contains($post['image_link'], "./view")) {?>
             <div class="divider col-span-9 col-start-2"></div> 
             <div class="grid grid-cols-12 col-span-5 col-start-4 grid-rows-6 gap-1 h-48">
-                <div class="col-span-4 row-span-6 bg-slate-500 rounded-md">
-                    <img class="object-scale-down" src="<?= $post['image_link']?>">
+                <div class="col-span-4 row-span-6 bg-cyan-50 rounded-md flex flex-col">
+                    <img class="w-full object-contain min-h-0" src="<?= $post['image_link']?>">
                 </div> 
                 <div class="grid grid-cols-3 col-span-8 row-span-1 mb-1 bg-slate-300 rounded-md">
                     <p class="text-left col-span-1 text-black ml-2">Utilisateur : <?= getUsernameById($post['user_id']) ?> </p>
@@ -86,8 +86,16 @@
         </div>
     </form>
 
-
-
+<?php }  else { // TODO : you are not connected?>
+    <div class="hero w-full content-center text-center mt-52">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold text-gray-600">Vous n'êtes pas connecté</h1>
+                <p class="py-6 text-gray-900">Veuillez vous connecter pour pouvoir commenter un post</p>
+            </div>
+        </div>
+    </div>
+<?php }?>
 </div>
 
 

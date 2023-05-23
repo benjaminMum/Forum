@@ -164,17 +164,27 @@ function newPost($formData) {
     }
 }
 
-// View post in with its comments
+// View a post with its comments
 function post($postId) {
     require_once "view/post.php";
+    require_once "view/lost.php";
+    require_once "view/closed.php";
     require_once "model/postManager.php";
+    require_once "model/commentManager.php";
     require_once "model/userManager.php";
 
-    if(postExists($postId) == false) {
-
-    } else if(postIsOpen($postId) == false) {
-        
+    if(postExists($postId)) {
+        if(postIsOpen($postId)) {
+            $post = getPostById($postId);
+            $comments = getAllCommentsOfPost($postId);
+            view_post($post[0], $comments);
+        } else {
+            view_closed();
+        }
+    } else {
+        view_lost();
     }
+    
 
 }
 
@@ -189,7 +199,7 @@ function commentPost($commentData, $postId) {
 
     if($postData != null) {
         if($commentData != null) {
-
+            if($postiso)
             $testsPassed = false;
     
             if(strlen($commentData['formCommentPostComment']) > 2000) {
@@ -206,7 +216,7 @@ function commentPost($commentData, $postId) {
             }
             else {
                 $testsPassed = true;
-            }
+            }   
 
             if($testsPassed == true) {
                 addCommentToPost($commentData, $postData['user_id'], $postData['id'], $_FILES['formCommentPostFile']);
