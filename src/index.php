@@ -34,6 +34,9 @@ if(isset($action)) {
         case 'commentComment';
             commentComment($_POST, $_GET['id']);
             break;
+        case 'report':
+            report($id);
+            break;
         default:
             home($_GET['page']);
             break;

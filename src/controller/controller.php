@@ -292,3 +292,23 @@ function commentComment($commentData, $commentId) {
 }
 
 #endregion
+
+
+#region Report
+
+function report($id) {
+    require_once "model/postManager.php";
+
+    
+
+    if(getPostById($id) != null) {
+        if(isPostOpen($id)) {
+
+        }
+        reportPost($id);
+    }
+
+    
+}
+
+#endregion

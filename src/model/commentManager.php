@@ -38,7 +38,7 @@ function addCommentToComment($formData, $userID, $parentCommentID, $parentPostID
         }
     } else {
         //if there is no file then it is a video link
-        $video_link = $formData['formCommentPostLink'];
+        $video_link = $formData['formCommentCommentLink'];
         $query = "INSERT INTO `comments` (user_id, post_id, comment_id, text, date, image_link, banned) " . 
              "VALUES ('$userID', '$parentPostID', '$parentCommentID', '$comment', '$date', '$video_link', 0);";
     }

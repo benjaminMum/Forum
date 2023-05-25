@@ -78,6 +78,28 @@ function getPostById($postId) {
     return $result;
 }
 
+function isPost() {
+    
+}
+
+function reportPost($postID) {
+    $query = "UPDATE `users` SET `closed` = 1;";
+    executeQueryIUD($query);
+}
+
+function isPostOpen($postId) {
+    $query = "SELECT `closed` FROM `posts` WHERE `id` = '$postId';";
+    $result = executeQuerySelect($query);
+
+    if($result[0]['closed'] == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
 #region Categories
 
 
