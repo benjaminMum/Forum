@@ -1,5 +1,5 @@
 <?php 
-    function view_lost() {
+    function view_lost($customText = null) {
         ob_start();
         $title = "404";
 
@@ -9,7 +9,12 @@
   <div class="hero-content text-center">
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">404</h1>
-      <p class="py-6">Page ou post introuvable</p>
+      <?php if($customText != null) {?>
+        <p class="py-6"><?= $customText?></p>
+      <?php } else {?>
+        <p class="py-6">Page ou post introuvable</p>
+      <?php } ?>
+      
     </div>
   </div>
 </div>
