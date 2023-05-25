@@ -199,7 +199,6 @@ function commentPost($commentData, $postId) {
 
     if($postData != null) {
         if($commentData != null) {
-            if($postiso)
             $testsPassed = false;
     
             if(strlen($commentData['formCommentPostComment']) > 2000) {
@@ -219,7 +218,7 @@ function commentPost($commentData, $postId) {
             }   
 
             if($testsPassed == true) {
-                addCommentToPost($commentData, $postData['user_id'], $postData['id'], $_FILES['formCommentPostFile']);
+                addCommentToPost($commentData, $_SESSION['userId'], $postData['id'], $_FILES['formCommentPostFile']);
                 header("location:/index.php?action=post&id=" . $postData['id']);
             } else {
                 view_commentPost($postData, $err);
@@ -229,6 +228,66 @@ function commentPost($commentData, $postId) {
         }
     } else {
         view_lost();
+    }
+}
+
+function commentComment($commentData, $commentId) {
+    require_once "view/lost.php";
+    require_once "view/commentComment.php";
+    require_once "model/postManager.php";
+    require_once "model/userManager.php";
+    require_once "model/commentManager.php";
+    
+    
+    $parentCommentData = getCommentById($commentId)[0];
+    $parentPostData = getPostById($parentCommentData['post_id'])[0];
+
+    
+
+    if($parentPostData != null) {
+        if($parentCommentData != null) {
+            if(isCommentLevel2($commentId) == false) {
+                if($commentData != null) {
+                    $testsPassed = false;
+        
+                    if(strlen($commentData['formCommentCommentComment']) > 2000) {
+                        $err = "Votre commentaire dépasse les 2000 charactères";
+                    } 
+                    else if(($_FILES['formCommentCommentFile']['name']==null xor $commentData['formCommentCommentLink']==null) == false) {
+                        $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
+                    }
+                    else if(str_contains($commentData['formCommentCommentLink'], 'youtube.com') == false && $_FILES['formCommentCommentFile']['name']==null) {
+                        $err = "Veuillez utiliser un lien de vidéo youtube";
+                    } 
+                    else if (strlen($commentData['formCommentCommentLink']) > 45) {
+                        $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
+                    }
+                    else {
+                        $testsPassed = true;
+                    }   
+        
+                    if($testsPassed == true) {
+                        addCommentToComment($commentData, $_SESSION['userId'], $parentCommentData['id'], $parentCommentData['post_id'], $_FILES['formCommentCommentFile']);
+                        header("location:/index.php?action=post&id=" . $parentPostData['id']);
+                    } else {
+                        view_commentComment($parentPostData, $parentCommentData, $err);
+                    }
+                } else {
+                    view_commentComment($parentPostData, $parentCommentData);
+                }
+            } else {
+                // Comment already commented
+
+                //temporary
+                view_lost("");
+            }
+        } else {
+            //Comment does not exist
+            view_lost("Ce commentaire n'existe pas");
+        }
+    } else {
+        // parent post of comment does not exist
+        view_lost("Le post parent de ce commentaire n'existe");
     }
 }
 

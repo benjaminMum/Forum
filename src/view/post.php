@@ -57,7 +57,7 @@
                     </div>
                     <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment1['text'] ?></p>
-                        <a class="btn col-span-3 col-start-10 mr-2 btn-sm" href="/index.php?action=commentPost&id=<?= $comment1['id'] ?>">Commenter</a>
+                        <a class="btn col-span-3 col-start-10 mr-2 btn-sm" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
                     </div>
                 </div>
             <?php } else { ?>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment1['text'] ?></p>
-                        <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=commentPost&id=<?= $comment1['id'] ?>">Commenter</a>
+                        <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
                     </div>
                 </div>
             <?php } ?>
