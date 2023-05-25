@@ -26,8 +26,8 @@ function register($registerData) {
     } else if(preg_match($exp, $registerData['formRegisterEmail']) == false) {
         $err = "L'adresse mail n'est pas conforme";
     }
-    else if(strlen($registerData['formRegisterEmail']) > 45) {
-        $err = "L'adresse mail dépasse les 45 charactères autorisés";
+    else if(strlen($registerData['formRegisterEmail']) > 254) {
+        $err = "L'adresse mail dépasse les 254 charactères autorisés";
     } 
     else if(strlen($registerData['formRegisterUsername']) > 20) {
         $err = "Le nom d'utilisateur dépasse les 20 charactères";
