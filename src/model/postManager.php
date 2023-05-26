@@ -78,14 +78,16 @@ function getPostById($postId) {
     return $result;
 }
 
-function isPost() {
-    
+function reportPostTempo($postId) {
+    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = '$postId';";
+    executeQueryIUD($query);     
 }
 
-function reportPost($postID) {
-    $query = "UPDATE `users` SET `closed` = 1;";
+function reportPost($postId) {
+    $query = "UPDATE `posts` SET `closed` = 1 WHERE `id` = '$postId';";
     executeQueryIUD($query);
 }
+
 
 function isPostOpen($postId) {
     $query = "SELECT `closed` FROM `posts` WHERE `id` = '$postId';";

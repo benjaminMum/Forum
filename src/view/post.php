@@ -19,7 +19,8 @@
             <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                 <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $post['title'] ?></p>
-                <a class="btn col-span-3 col-start-10 mr-2 btn-sm" href="/index.php?action=commentPost&id=<?= $post['id'] ?>">Commenter</a>
+                <a class="btn btn-error col-span-2 col-start-10 mr-1 mt-3 btn-xs" href="/index.php?action=reportTempo&postid=<?= $post['id'] ?>">Signaler</a>
+                <a class="btn col-span-1 col-start-12 mr-1 mt-3 btn-xs" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
             </div>
         </div>
         <div class="divider col-span-9 col-start-2 mt-3 mb-3"></div>
@@ -36,7 +37,8 @@
             <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                 <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $post['title'] ?></p>
-                <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=commentPost&id=<?= $post['id'] ?>">Commenter</a>
+                <a class="btn btn-error col-span-1 col-start-11 mr-1 btn-xs" href="/index.php?action=reportTempo&postid=<?= $post['id'] ?>">Signaler</a>
+                <a class="btn col-span-1 col-start-12 mr-1 btn-xs" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
             </div>
         </div>
         <div class="divider col-span-9 col-start-2 mt-3 mb-3"></div>
@@ -57,7 +59,9 @@
                     </div>
                     <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment1['text'] ?></p>
-                        <a class="btn col-span-3 col-start-10 mr-2 btn-sm" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
+                        <a class="btn btn-error col-span-2 col-start-9 mr-1 mt-5 btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment1['id'] ?>">Signaler</a>
+                        <a class="btn col-span-2 col-start-11 mr-1 mt-5 btn-xs" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
+
                     </div>
                 </div>
             <?php } else { ?>
@@ -71,7 +75,8 @@
                     </div>
                     <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment1['text'] ?></p>
-                        <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
+                        <a class="btn btn-error col-span-2 col-start-9 mr-1 mt-3 btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment1['id'] ?>">Signaler</a>
+                        <a class="btn col-span-2 col-start-11 mr-1 mt-3 btn-xs" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
                     </div>
                 </div>
             <?php } ?>
@@ -89,6 +94,7 @@
                             </div>
                             <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment2['text'] ?></p>
+                                <a class="btn btn-error col-span-2 col-start-11 mr-1 mt-3 btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment2['id'] ?>">Signaler</a>
                             </div>
                         </div>
                     <?php } else { ?>
@@ -102,6 +108,7 @@
                             </div>
                             <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment2['text'] ?></p>
+                                <a class="btn btn-error col-span-2 col-start-11 mr-1 mt-3 btn-xs" href="/index.php?action=reportcommentTempo&id=<?= $comment2['id'] ?>">Signaler</a>
                             </div>
                         </div>
                     <?php } ?>

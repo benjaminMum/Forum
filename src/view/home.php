@@ -26,7 +26,9 @@
                 <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                     <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                     <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
-                    <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
+                    <a class="btn btn-error col-span-2 col-start-10 mr-1 mt-3 btn-xs" href="/index.php?action=reportTempo&postid=<?= $post['id'] ?>">Signaler</a>
+                    <a class="btn col-span-1 col-start-12 mr-1 mt-3 btn-xs" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
+                    
                 </div>
             </div>
         <?php } else { ?>
@@ -42,7 +44,8 @@
                 <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                     <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                     <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
-                    <a class="btn col-span-2 col-start-11 mr-2 btn-sm" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
+                    <a class="btn btn-error col-span-1 col-start-11 mr-1 btn-xs" href="/index.php?action=reportTempo&postid=<?= $post['id'] ?>">Signaler</a>
+                    <a class="btn col-span-1 col-start-12 mr-1 btn-xs" href="/index.php?action=post&id=<?= $post['id'] ?>">Voir</a>
                 </div>
             </div>
         <?php } ?>

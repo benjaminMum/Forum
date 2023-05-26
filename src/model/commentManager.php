@@ -57,6 +57,38 @@ function getCommentById($commentId) {
     return $result;
 }
 
+function isCommentOpen($commentId) {
+    $query = "SELECT `banned` FROM `comments` WHERE `id` = '$commentId';";
+    $result = executeQuerySelect($query);
+
+    if($result[0]['banned'] == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function commentExists($commentId) {
+    $query = "SELECT `closed` FROM `comments` WHERE `id` = '$commentId';";
+    $result = executeQuerySelect($query);
+
+    if($result == null) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function reportCommentTempo($commentId) {
+    $query = "UPDATE `comments` SET `banned` = 2 WHERE `id` = '$commentId';";
+    executeQueryIUD($query);
+}
+
+function reportComment($commentId) {
+    $query = "UPDATE `comments` SET `banned` = 1 WHERE `id` = '$commentId';";
+    executeQueryIUD($query);
+}
+
 function isCommentLevel2($commentId) {
     $query = "SELECT `comment_id` FROM `comments` WHERE `id` = '$commentId';";
     $result = executeQuerySelect($query);

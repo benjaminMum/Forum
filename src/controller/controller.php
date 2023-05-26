@@ -296,17 +296,51 @@ function commentComment($commentData, $commentId) {
 
 #region Report
 
-function report($id) {
+function reportTempo($id) {
     require_once "model/postManager.php";
+    require_once "model/commentManager.php";
+    require_once "view/lost.php";
+
+    if($_SESSION != NULL) {
+        //$id can be the id of a post or the id of a comment 
+        $post = getPostById($id);
+        $comment = getCommentById($id);
+
+        if($id['postid'] != null) {
+            $postid = $id['postid'];
+            if(postExists($postid)) {
+                if(isPostOpen($postid)) {
+                    reportPostTempo($postid);
+                    view_lost("Ce post a été signalé, il sera vérifié par un administrateur", "Post signalé");
+                } else {
+                    view_lost("Ce post a déjà été signalé", "Erreur");
+                }
+            }else {
+                view_lost();
+            }
+        }
+        else if ($id['commentid'] != null) {
+            $commentid = $id['commentid'];
+            if(commentExists($commentid)) {
+                if(isCommentOpen($commentid)) {
+                    reportCommentTempo($commentid);
+                    view_lost("Ce post a été commentaire, il sera vérifié par un administrateur", "Commentaire signalé");
+                } else {
+                    view_lost("Ce commentaire a déjà été signalé", "Erreur");
+                }
+            } else {
+                view_lost();
+            }
+        } 
+        else {
+            //neither a post or comment
+            view_lost();
+        } 
+    } else {
+        view_lost("Veuillez vous connecter pour pouvoir signaler un post");
+    }
 
     
-
-    if(getPostById($id) != null) {
-        if(isPostOpen($id)) {
-
-        }
-        reportPost($id);
-    }
 
     
 }
