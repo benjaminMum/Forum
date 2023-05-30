@@ -57,19 +57,39 @@ function getCommentById($commentId) {
     return $result;
 }
 
+function getAllReportedComments() {
+    $query = "SELECT * FROM `comments` WHERE `banned` = 1;";
+    return executeQuerySelect($query);
+}
+
 function isCommentOpen($commentId) {
     $query = "SELECT `banned` FROM `comments` WHERE `id` = '$commentId';";
     $result = executeQuerySelect($query);
 
-    if($result[0]['banned'] == 0) {
-        return true;
-    } else {
+    if($result[0]['banned'] != 0) {
         return false;
+    } else {
+        return true;
     }
 }
 
+function banReportedCommentDB($commentid) {
+    $query = "UPDATE `comments` SET `banned` = 2 WHERE `id` = '$commentid';";
+    executeQueryIUD($query);
+}
+
+function allowReportedCommentDB($commentid) {
+    $query = "UPDATE `comments` SET `banned` = 0 WHERE `id` = '$commentid';";
+    executeQueryIUD($query);
+}
+
+function blockCommentDB($id) {
+    $query = "UPDATE `comments` SET `banned` = 2 WHERE `id` = '$id';";
+    executeQueryIUD($query);
+}
+
 function commentExists($commentId) {
-    $query = "SELECT `closed` FROM `comments` WHERE `id` = '$commentId';";
+    $query = "SELECT `banned` FROM `comments` WHERE `id` = '$commentId';";
     $result = executeQuerySelect($query);
 
     if($result == null) {
@@ -80,11 +100,6 @@ function commentExists($commentId) {
 }
 
 function reportCommentTempo($commentId) {
-    $query = "UPDATE `comments` SET `banned` = 2 WHERE `id` = '$commentId';";
-    executeQueryIUD($query);
-}
-
-function reportComment($commentId) {
     $query = "UPDATE `comments` SET `banned` = 1 WHERE `id` = '$commentId';";
     executeQueryIUD($query);
 }

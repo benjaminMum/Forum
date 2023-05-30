@@ -129,8 +129,42 @@ function getIdOfUser($email) {
     return $result[0]['id'];
 }
 
+function userExists($id) {
+    $query = "SELECT `banned` FROM `users` WHERE `id` = '$id';";
+    $result = executeQuerySelect($query);
+
+    if($result == null) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+
+function getAllUsers() {
+    $query = "SELECT * FROM `users` ORDER BY `username` ASC;";
+    return executeQueryIUD($query);
+}
+
+function userIsOpen($id) {
+    $query = "SELECT `banned` FROM `users` WHERE `id` = '$id';";
+    $result = executeQuerySelect($query);
+
+    if($result[0]['banned'] == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function getUsernameById($id) {
     $query = "SELECT `username` FROM `users` WHERE `id` = '$id';";
     $result = executeQuerySelect($query);
     return $result[0]['username'];
+}
+
+function blockUserDB($id) {
+    $query = "UPDATE `users` SET `banned` = 2 WHERE `id` = '$id';";
+    executeQueryIUD($query);
 }

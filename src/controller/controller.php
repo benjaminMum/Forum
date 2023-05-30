@@ -116,6 +116,7 @@ function newPost($formData) {
     require_once "view/newPost.php";
     require_once "model/postManager.php";
     require_once "model/userManager.php";
+    require_once "model/categoryManager.php";
 
     $categories = getAllCategories();
 
@@ -144,6 +145,7 @@ function newPost($formData) {
         else if (strlen($formData['formNewpostLink']) > 45) {
             $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
         }
+
         else {
             $testsPassed = true;
         }
@@ -302,10 +304,6 @@ function reportTempo($id) {
     require_once "view/lost.php";
 
     if($_SESSION != NULL) {
-        //$id can be the id of a post or the id of a comment 
-        $post = getPostById($id);
-        $comment = getCommentById($id);
-
         if($id['postid'] != null) {
             $postid = $id['postid'];
             if(postExists($postid)) {
@@ -339,10 +337,299 @@ function reportTempo($id) {
     } else {
         view_lost("Veuillez vous connecter pour pouvoir signaler un post");
     }
+}
 
+function showReportedPostAndComments() {
+    require_once "view/reported.php";
+    require_once "view/lost.php";
+    require_once "model/userManager.php";
+    require_once "model/commentManager.php";
+    require_once "model/postManager.php";
+
+    if($_SESSION['admin'] == true) { 
+        $reportedPosts = getAllReportedPosts();
+        $reportedComments = getAllReportedComments();
     
+        view_reported($reportedPosts, $reportedComments);
+    } else {
+        view_lost();
+    }
 
     
 }
 
+function banReportedPost($postid) {
+    require_once "model/postManager.php";
+    require_once "view/lost.php";
+
+    if($_SESSION['admin'] == true) {
+        if(postExists($postid)) {
+            if(isPostOpen($postid) == false) {
+                banReportedPostDB($postid);
+                header("location:/index.php?action=reportedPosts");
+            } else {
+                view_lost("Ce poste n'as pas été signalé", "Erreur");
+            }
+        } else {
+            view_lost();
+        }
+    } else {
+        view_lost();
+    }
+}
+
+function banReportedComment($commentid) {
+    require_once "model/commentManager.php";
+    require_once "view/lost.php";
+
+    if($_SESSION['admin'] == true) {
+        if(commentExists($commentid)) {
+            if(isCommentOpen($commentid) == false) {
+                banReportedCommentDB($commentid);
+                header("location:/index.php?action=reportedPosts");
+            } else {
+                view_lost("Ce poste n'as pas été signalé", "Erreur");
+            }
+        } else {
+            view_lost();
+        }
+    } else {
+        view_lost();
+    }
+}
+
+
+function allowReportedPost($postid) {
+    require_once "model/postManager.php";
+    require_once "view/lost.php";
+
+    if($_SESSION['admin'] == true) {
+        if(postExists($postid)) {
+            if(isPostOpen($postid) == false) {
+                allowReportedPostDB($postid);
+                header("location:/index.php?action=reportedPosts");
+            } else {
+                view_lost("Ce poste n'as pas été signalé", "Erreur");
+            }
+        } else {
+            view_lost();
+        }
+    } else {
+        view_lost();
+    }
+}
+
+function allowReportedComment($commentid) {
+    require_once "model/commentManager.php";
+    require_once "view/lost.php";
+
+    if($_SESSION['admin'] == true) {
+        if(commentExists($commentid)) {
+            if(isCommentOpen($commentid) == false) {
+                allowReportedCommentDB($commentid);
+                header("location:/index.php?action=reportedPosts");
+            } else {
+                view_lost("Ce poste n'as pas été signalé", "Erreur");
+            }
+        } else {
+            view_lost();
+        }
+    } else {
+        view_lost();
+    }
+}
+
+function report($id) {
+    require_once "model/postManager.php";
+    require_once "model/commentManager.php";
+    require_once "model/userManager.php";
+
+    if($_SESSION['admin'] != false) {
+        $reportedPosts = getAllReportedPosts();
+        $reoprtedComments = getAllReportedComments();
+
+        if($id['postid'] != null) {
+            $postid = $id['postid'];
+            if(postExists($postid)) {
+                if(isPostOpen($postid)) {
+                    reportPostTempo($postid);
+                    view_lost("Ce post a été signalé, il sera vérifié par un administrateur", "Post signalé");
+                } else {
+                    view_lost("Ce post a déjà été signalé", "Erreur");
+                }
+            }else {
+                view_lost();
+            }
+        }
+        else if ($id['commentid'] != null) {
+            $commentid = $id['commentid'];
+            if(commentExists($commentid)) {
+                if(isCommentOpen($commentid)) {
+                    reportCommentTempo($commentid);
+                    view_lost("Ce post a été commentaire, il sera vérifié par un administrateur", "Commentaire signalé");
+                } else {
+                    view_lost("Ce commentaire a déjà été signalé", "Erreur");
+                }
+            } else {
+                view_lost();
+            }
+        } 
+        else {
+            //neither a post or comment
+            view_lost();
+        } 
+    } else {
+        view_lost();
+    }
+
+}
+
+#endregion
+
+
+#region Categories
+
+function addCategory($formData) {
+    require_once "view/addCategory.php";
+    require_once "view/lost.php";
+    require_once "model/categoryManager.php";
+
+    $allCategories = getAllCategories();
+
+    if($_SESSION['admin'] == true) {
+        if($formData != NULL) {
+            // Data validation
+            $dataIsValid = false;
+    
+            if(strlen($formData['formAddCategoryName']) > 45) {
+                $err = "Le nom de la catégorie est trop long";
+            } else {
+                $dataIsValid = true;
+            }
+    
+            if($dataIsValid) {
+                addCategoryDB($formData);
+                header("location:/index.php?action=addCategory");
+            } else {
+                view_addCategory($allCategories, $err);
+            }
+            
+        } else {
+            view_addCategory($allCategories, null);
+        }
+    } else {
+        view_lost("Accès non autorisé", "403");
+    }
+
+    
+
+
+}
+
+#endregion
+
+#region Archive
+
+function archivePost($id) {
+    require_once "view/lost.php";
+    require_once "model/postManager.php";
+    
+    if($_SESSION['admin'] == true) {
+        if(postExists($id)) {
+            if(postIsOpen($id)) {
+                archivePostDB($id) ;
+                view_lost("Ce poste a été archivé, il ne sera plus visible pour les utilisateurs", "Post archivé");
+            } else {
+                view_lost("Ce poste est déjà fermé", "Erreur");
+            }
+        } else {
+            view_lost("Ce poste n'existe pas", "Erreur");
+        }
+    } else {
+        view_lost("Accès interdit", "403");
+    }
+}
+
+
+
+#endregion
+
+#region Block
+
+function showAllUser() {
+    require_once "view/users.php";
+    require_once "view/lost.php";
+    require_once "model/userManager.php";
+
+    if($_SESSION['admin'] == true) { 
+        $users = getAllUsers();
+        view_users($users);
+    } else {
+        view_lost();
+    }
+}
+
+function blockUser($id) {
+    // is admin, id exists, user is open, 
+    // display a list of all users who are open
+        // table
+    
+        require_once "view/lost.php";
+        require_once "model/postManager.php";
+        
+        if($_SESSION['admin'] == true) {
+            if((userExists($id))) {
+                if(userIsOpen($id)) {
+                    blockUserDB($id);
+                } else {
+                    view_lost("Cet utilisateur est déjà fermé", "Erreur");
+                }
+            } else {
+                view_lost("Ce poste n'existe pas", "Erreur");
+            }
+        } else {
+            view_lost("Accès interdit", "403");
+        }
+
+}
+
+function blockPost($id) {
+    require_once "view/lost.php";
+    require_once "model/postManager.php";
+    
+    if($_SESSION['admin'] == true) {
+        if(postExists($id)) {
+            if(postIsOpen($id)) {
+                blockPostDB($id) ;
+                view_lost("Ce poste a été bloqué, il ne sera plus visible pour les utilisateurs", "Post bloqué");
+            } else {
+                view_lost("Ce poste est déjà fermé", "Erreur");
+            }
+        } else {
+            view_lost("Ce poste n'existe pas", "Erreur");
+        }
+    } else {
+        view_lost("Accès interdit", "403");
+    }
+}
+
+function blockComment($id) {
+    require_once "view/lost.php";
+    require_once "model/commentManager.php";
+    
+    if($_SESSION['admin'] == true) {
+        if(commentExists($id)) {
+            if(isCommentOpen($id)) {
+                blockCommentDB($id) ;
+                view_lost("Ce commentaire a été bloqué, il ne sera plus visible pour les utilisateurs", "Commentaire bloqué");
+            } else {
+                view_lost("Ce commentaire est déjà fermé", "Erreur");
+            }
+        } else {
+            view_lost("Ce commentaire n'existe pas", "Erreur");
+        }
+    } else {
+        view_lost("Accès interdit", "403");
+    }
+}
 #endregion

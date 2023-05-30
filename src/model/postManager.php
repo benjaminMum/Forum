@@ -13,7 +13,7 @@ function getMaxPageNumber($page) {
 function GetRecentPosts($page) {
     // Verifies if the page given in GET is in the range
     $pagesRange = range(1, getMaxPageNumber($page));
-    if (in_array($page, $pagesRange) == false) {
+    if (in_array($page, $pagesRange) == false || $page == null) {
         $page = 1;
     }
 
@@ -50,11 +50,16 @@ function createPost($formData, $userId, $file=null) {
     return executeQueryIUD($query);
 }
 
+function getAllReportedPosts() {
+    $query = "SELECT * FROM `posts` WHERE `closed` = 1;";
+    return executeQuerySelect($query);
+}
+
 function postIsOpen($postId) {
     $query = "SELECT `closed` FROM `posts` WHERE `id` = '$postId';";
     $result = executeQuerySelect($query);
 
-    if($result[0]['closed'] == 1) {
+    if($result[0]['closed'] != 0) {
         return false;
     } else {
         return true;
@@ -79,15 +84,29 @@ function getPostById($postId) {
 }
 
 function reportPostTempo($postId) {
-    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = '$postId';";
+    $query = "UPDATE `posts` SET `closed` = 1 WHERE `id` = '$postId';";
     executeQueryIUD($query);     
 }
 
-function reportPost($postId) {
-    $query = "UPDATE `posts` SET `closed` = 1 WHERE `id` = '$postId';";
+function banReportedPostDB($postId) {
+    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = '$postId';";
     executeQueryIUD($query);
 }
 
+function allowReportedPostDB($postId) {
+    $query = "UPDATE `posts` SET `closed` = 0 WHERE `id` = '$postId';";
+    executeQueryIUD($query);
+}
+
+function archivePostDB($id) {
+    $query = "UPDATE `posts` SET `closed` = 3 WHERE `id` = '$id';";
+    executeQueryIUD($query);
+}
+
+function blockPostDB($id) {
+    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = '$id';";
+    executeQueryIUD($query);
+}
 
 function isPostOpen($postId) {
     $query = "SELECT `closed` FROM `posts` WHERE `id` = '$postId';";
@@ -99,21 +118,3 @@ function isPostOpen($postId) {
         return false;
     }
 }
-
-
-
-#region Categories
-
-
-
-function getAllCategories() {
-    $query = "SELECT * FROM `categories`;";
-    return executeQuerySelect($query);
-}
-
-function categoryValueExists($formValue) {
-    $query = "SELECT `id` FROM `categories` WHERE `id` = '$formValue';";
-    return executeQuerySelect($query);
-}
-
-#endregion
