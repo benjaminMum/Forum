@@ -18,3 +18,14 @@ function categoryValueExists($formValue) {
     $query = "SELECT `id` FROM `categories` WHERE `id` = '$formValue';";
     return executeQuerySelect($query);
 }
+
+function cateogryExists($name) {
+    $query = "SELECT `id` FROM `categories` WHERE `name` = $name";
+    $result = executeQuerySelect($query);
+
+    if($result[0]['id'] != null) {
+        return true;
+    } else {
+        return false;
+    }
+}

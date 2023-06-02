@@ -140,11 +140,9 @@ function userExists($id) {
     }
 }
 
-
-
 function getAllUsers() {
-    $query = "SELECT * FROM `users` ORDER BY `username` ASC;";
-    return executeQueryIUD($query);
+    $query = "SELECT * FROM `users` WHERE `admin` = 0 ORDER BY `username` ASC;";
+    return executeQuerySelect($query);
 }
 
 function userIsOpen($id) {
@@ -164,7 +162,13 @@ function getUsernameById($id) {
     return $result[0]['username'];
 }
 
+function getUserIDByEmail($email) {
+    $query = "SELECT `id` FROM `users` WHERE `email` = '$email';";
+    $result = executeQuerySelect($query);
+    return $result[0]['id'];
+}
+
 function blockUserDB($id) {
-    $query = "UPDATE `users` SET `banned` = 2 WHERE `id` = '$id';";
+    $query = "UPDATE `users` SET `banned` = 2 WHERE `id` = $id;";
     executeQueryIUD($query);
 }

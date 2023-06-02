@@ -11,7 +11,7 @@ if(isset($action)) {
     // Routing
     switch ($action) {
         case 'home':
-            home($_GET['page']);
+            home($_GET['page'], $_POST['categoryChoice']);
             break;
         case 'register':
             register($_POST);
@@ -55,6 +55,9 @@ if(isset($action)) {
         case 'addCategory':
             addCategory($_POST);
             break;
+        case 'showUsers':
+            showAllUser();
+            break;
         case 'archivePost':
             archivePost($_GET['id']);
             break;
@@ -68,10 +71,10 @@ if(isset($action)) {
             blockUser($_GET['id']);
             break;
         default:
-            home($_GET['page']);
+            home($_GET['page'], $_POST['categoryChoice']);
             break;
     }
 } else {
-    home($_GET['page']);
+    home($_GET['page'], $_POST['categoryChoice']);
 }
 

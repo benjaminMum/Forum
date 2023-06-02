@@ -1,14 +1,14 @@
 <?php 
     function view_users($users) {
         ob_start();
-        $title = "Nouvelle catégorie";
+        $title = "Utilisateurs";
 
 ?>
 
 
 
 <div class="w-1/2 mt-10">
-    <h1 class="text-3xl text-center text-black">Nouvelle catégorie</h1>
+    <h1 class="text-3xl text-center text-black">Utilisateurs</h1>
     
     <!-- display all categories -->
     <div class="flex flex-col">
@@ -21,6 +21,7 @@
                     <th scope="col" class="px-6 py-4">ID</th>
                     <th scope="col" class="px-6 py-4">E-Mail</th>
                     <th scope="col" class="px-6 py-4">Nom d'utilisateur</th>
+                    <th scope="col" class="px-6 py-4"></th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                         <td class="whitespace-nowrap px-6 py-4 font-medium"><?= $user['id'] ?></td>
                         <td class="whitespace-nowrap px-6 py-4"><?= $user['email'] ?></td>
                         <td class="whitespace-nowrap px-6 py-4"><?= $user['username'] ?></td>
+                        <td class="whitespace-nowrap px-6 py-4"><a href="/index.php?action=blockUser&id=<?= $user['id']?>" class="btn btn-error">Bloquer</a></td>
                     </tr>
                 <?php }?>
             </tbody>

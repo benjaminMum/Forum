@@ -5,8 +5,6 @@
 
 ?>
 
-<?php if($_SESSION != NULL) {?>
-
 <div class="w-1/2 mt-10">
     <h1 class="text-3xl text-center text-black">Nouveau post</h1>
     <?php if($err != null) { ?>
@@ -63,13 +61,6 @@
         </div>
     </form>
 </div>
-
-<?php } else { // you are not connected... ?>
-
-        
-
-<?php } ?>
-
 
 <?php
     $content = ob_get_clean();

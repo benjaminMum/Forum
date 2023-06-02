@@ -10,7 +10,7 @@ function getMaxPageNumber($page) {
     return ceil($numberOfRows[0][0] / 10);
 }
 
-function GetRecentPosts($page) {
+function GetRecentPosts($page, $cat) {
     // Verifies if the page given in GET is in the range
     $pagesRange = range(1, getMaxPageNumber($page));
     if (in_array($page, $pagesRange) == false || $page == null) {
@@ -22,7 +22,12 @@ function GetRecentPosts($page) {
     //      if $page=2 -> offset = 10 (will display posts 11-20 in the order of the most recent)
     $offset = (int)$page * 10 - 10;
 
-    $query = "SELECT * FROM `posts` ORDER BY `date` DESC LIMIT 10 OFFSET $offset;";
+    if($cat == null) {
+        $query = "SELECT * FROM `posts` WHERE `closed` = 0  ORDER BY `date` DESC LIMIT 10 OFFSET $offset;";
+    } else {
+        $query = "SELECT * FROM `posts` WHERE `category_id` = $cat AND `closed` = 0 ORDER BY `date` DESC LIMIT 10 OFFSET $offset;";
+    }
+
     return executeQuerySelect($query);
 }
 
@@ -38,7 +43,7 @@ function createPost($formData, $userId, $file=null) {
             $query = "INSERT INTO `posts` (user_id, category_id, title, date, image_link, closed) " . 
              "VALUES ('$userId', '$category','$title', '$date', '$file_link', 0);";
         } else {
-
+            return 1;
         }
     } else {
         //if there is no file then it is a video link
@@ -84,32 +89,32 @@ function getPostById($postId) {
 }
 
 function reportPostTempo($postId) {
-    $query = "UPDATE `posts` SET `closed` = 1 WHERE `id` = '$postId';";
+    $query = "UPDATE `posts` SET `closed` = 1 WHERE `id` = $postId;";
     executeQueryIUD($query);     
 }
 
 function banReportedPostDB($postId) {
-    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = '$postId';";
+    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = $postId;";
     executeQueryIUD($query);
 }
 
 function allowReportedPostDB($postId) {
-    $query = "UPDATE `posts` SET `closed` = 0 WHERE `id` = '$postId';";
+    $query = "UPDATE `posts` SET `closed` = 0 WHERE `id` = $postId;";
     executeQueryIUD($query);
 }
 
 function archivePostDB($id) {
-    $query = "UPDATE `posts` SET `closed` = 3 WHERE `id` = '$id';";
+    $query = "UPDATE `posts` SET `closed` = 3 WHERE `id` = $id;";
     executeQueryIUD($query);
 }
 
 function blockPostDB($id) {
-    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = '$id';";
+    $query = "UPDATE `posts` SET `closed` = 2 WHERE `id` = $id;";
     executeQueryIUD($query);
 }
 
 function isPostOpen($postId) {
-    $query = "SELECT `closed` FROM `posts` WHERE `id` = '$postId';";
+    $query = "SELECT `closed` FROM `posts` WHERE `id` = $postId;";
     $result = executeQuerySelect($query);
 
     if($result[0]['closed'] == 0) {

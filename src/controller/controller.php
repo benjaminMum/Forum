@@ -1,11 +1,14 @@
 <?php
 
-function home($page) {
+function home($page, $choosenCategory) {
     require_once "view/home.php";
     require_once "model/postManager.php";
+    require_once "model/categoryManager.php";
 
-    $posts = GetRecentPosts($page);
-    view_home($posts);
+    $posts = GetRecentPosts($page, $choosenCategory);
+    $categories = getAllCategories();
+
+    view_home($posts, $categories);
     
 }
 
@@ -72,28 +75,32 @@ function login($loginData) {
     if($loginData != null) {
         if(loginIsCorrect($loginData)) {
             $email = $loginData['formLoginEmail'];
-            //check if account is confirmed
-            if(accountIsConfirmed($email)) {
-                $_SESSION['email'] = $email;
-                $_SESSION['admin'] = IsUserAdmin($email);
-                $_SESSION['userId'] = getIdOfUser($email);
-                header("location:/index.php?action=home");
-            } else {
-                if($loginData['token'] != null) {
-                    if(confirmAccount($email, $loginData['token'])) {
-                        $_SESSION['email'] = $email;
-                        $_SESSION['admin'] = IsUserAdmin($email);
-                        $_SESSION['userId'] = getIdOfUser($email);
-                        header("location:/index.php?action=home");
-                    } else {
-                        view_login("Votre jeton d'identification est incorrect.");
+            if(userIsOpen(getUserIDByEmail($email))) {
+                if(accountIsConfirmed($email)) {
+                    $_SESSION['email'] = $email;
+                    $_SESSION['admin'] = IsUserAdmin($email);
+                    $_SESSION['userId'] = getIdOfUser($email);
+                    header("location:/index.php?action=home");
+                } else {
+                    if($loginData['token'] != null) {
+                        if(confirmAccount($email, $loginData['token'])) {
+                            $_SESSION['email'] = $email;
+                            $_SESSION['admin'] = IsUserAdmin($email);
+                            $_SESSION['userId'] = getIdOfUser($email);
+                            header("location:/index.php?action=home");
+                        } else {
+                            view_login("Votre jeton d'identification est incorrect.");
+                        }
+                    } 
+                    else {
+                        // todo : rewrite the message
+                        view_login("Votre compte n'a pas été confirmé");
                     }
-                } 
-                else {
-                    // todo : rewrite the message
-                    view_login("Votre compte n'a pas été confirmé");
                 }
+            } else {
+                view_login("Votre compte a été banni par un administrateur");
             }
+            //check if account is confirmed
         } else {
             view_login("Données incorrectes");
         }
@@ -114,56 +121,62 @@ function disconnect() {
 
 function newPost($formData) {
     require_once "view/newPost.php";
+    require_once "view/lost.php";
     require_once "model/postManager.php";
     require_once "model/userManager.php";
     require_once "model/categoryManager.php";
 
     $categories = getAllCategories();
+    if($_SESSION != NULL) {
+        if($formData != null) {
 
-    if($formData != null) {
-
-        // data validation
-        
-        $testsPassed = false;
-
-        if($formData['formNewpostTitle'] == "") {
-            $err = "Votre spéficier le titre de votre poste";
-        }
-        else if(strlen($formData['formNewpostTitle']) > 150) {
-            $err = "Votre titre dépasse les 150 charactères";
-        } 
-        else if(categoryValueExists($formData['formNewpostCategory']) == false) {
-            // If the "value" attribute of the category field does not correspond to an id in the "category" table
-            $err = "La catégorie séléctionnée n'existe pas";
-        } 
-        else if(($_FILES['formNewpostFile']['name']==null xor $formData['formNewpostLink']==null) == false) {
-            $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
-        }
-        else if(str_contains($formData['formNewpostLink'], "youtube.com") == false && $_FILES['formNewpostFile']['name']==null) {
-            $err = "Veuillez utiliser un lien de vidéo youtube";
-        } 
-        else if (strlen($formData['formNewpostLink']) > 45) {
-            $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
-        }
-
-        else {
-            $testsPassed = true;
-        }
-        // end data validation
-
-
-        if($testsPassed) {
-            if(createPost($formData, $_SESSION['userId'], $_FILES['formNewpostFile'])) {
-                header("location:/index.php?action=home");
+            // data validation
+            
+            $testsPassed = false;
+    
+            if($formData['formNewpostTitle'] == "") {
+                $err = "Votre spéficier le titre de votre poste";
+            }
+            else if(strlen($formData['formNewpostTitle']) > 150) {
+                $err = "Votre titre dépasse les 150 charactères";
+            } 
+            else if(categoryValueExists($formData['formNewpostCategory']) == false) {
+                // If the "value" attribute of the category field does not correspond to an id in the "category" table
+                $err = "La catégorie séléctionnée n'existe pas";
+            } 
+            else if($_FILES['formNewpostFile']['name']!=null && $formData['formNewpostLink']!=null ) {
+                $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
+            }
+            else if(($formData['formNewpostLink'] != null && str_contains($formData['formNewpostLink'], "youtube.com") == false) && $_FILES['formNewpostFile']['name']==null) {
+                $err = "Veuillez utiliser un lien de vidéo youtube";
+            } 
+            else if (strlen($formData['formNewpostLink']) > 45) {
+                $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
+            }
+            else {
+                $testsPassed = true;
+            }
+            // end data validation
+    
+            if($testsPassed) {
+                $creationReturn = createPost($formData, $_SESSION['userId'], $_FILES['formNewpostFile']);
+                if($creationReturn == true) {
+                    header("location:/index.php?action=home");
+                } else if($creationReturn == 1) {
+                    view_newpost("Le fichier inséré n'est pas une image", $categories);
+                } else {
+                    view_newpost("Une erreur s'est produite lors de la création du post", $categories);
+                }
             } else {
-                view_newpost("Erreur lors de la création du post", $categories);
+                view_newpost($err, $categories);
             }
         } else {
-            view_newpost($err, $categories);
+            view_newpost(null, $categories);
         }
     } else {
-        view_newpost(null, $categories);
+        view_lost("Veuillez vous connecter pour pouvoir créer un post", "Erreur");
     }
+    
 }
 
 // View a post with its comments
@@ -199,38 +212,50 @@ function commentPost($commentData, $postId) {
     
     $postData = getPostById($postId)[0];
 
-    if($postData != null) {
-        if($commentData != null) {
-            $testsPassed = false;
+    if($_SESSION != NULL) {
+        if($postData != null) {
+            if($commentData != null) {
+                $testsPassed = false;
+        
+                if(strlen($commentData['formCommentPostComment']) > 2000) {
+                    $err = "Votre commentaire dépasse les 2000 charactères";
+                } 
+                else if($_FILES['formCommentPostFile']['name']!=null && $commentData['formCommentPostLink']!=null) {
+                    $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
+                }
+                else if(($commentData['formCommentPostLink'] != NULL && str_contains($commentData['formCommentPostLink'], 'youtube.com') == false) && $_FILES['formCommentPostFile']['name']==null) {
+                    $err = "Veuillez utiliser un lien de vidéo youtube";
+                } 
+                else if (strlen($commentData['formCommentPostLink']) > 45) {
+                    $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
+                }
+                else {
+                    $testsPassed = true;
+                }   
     
-            if(strlen($commentData['formCommentPostComment']) > 2000) {
-                $err = "Votre commentaire dépasse les 2000 charactères";
-            } 
-            else if(($_FILES['formCommentPostFile']['name']==null xor $commentData['formCommentPostLink']==null) == false) {
-                $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
-            }
-            else if(str_contains($commentData['formCommentPostLink'], 'youtube.com') == false && $_FILES['formCommentPostFile']['name']==null) {
-                $err = "Veuillez utiliser un lien de vidéo youtube";
-            } 
-            else if (strlen($commentData['formCommentPostLink']) > 45) {
-                $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
-            }
-            else {
-                $testsPassed = true;
-            }   
-
-            if($testsPassed == true) {
-                addCommentToPost($commentData, $_SESSION['userId'], $postData['id'], $_FILES['formCommentPostFile']);
-                header("location:/index.php?action=post&id=" . $postData['id']);
+                if($testsPassed == true) {
+                    $creationReturn = addCommentToPost($commentData, $_SESSION['userId'], $postData['id'], $_FILES['formCommentPostFile']);
+                    if($creationReturn == true) {
+                        header("location:/index.php?action=post&id=" . $postData['id']);
+                    } else if($creationReturn == 1) {
+                        view_newpost($postData, "Le fichier inséré n'est pas une image");
+                    } else {
+                        view_newpost($postData, "Une erreur s'est produite lors de la création du commentaire");
+                    }
+                } else {
+                    view_commentPost($postData, $err);
+                }
             } else {
-                view_commentPost($postData, $err);
+                view_commentPost($postData);
             }
         } else {
-            view_commentPost($postData);
+            view_lost();
         }
     } else {
-        view_lost();
+        view_lost("Veuillez vous connecter pour pouvoir créer un post", "Erreur");
     }
+
+    
 }
 
 function commentComment($commentData, $commentId) {
@@ -240,56 +265,60 @@ function commentComment($commentData, $commentId) {
     require_once "model/userManager.php";
     require_once "model/commentManager.php";
     
-    
     $parentCommentData = getCommentById($commentId)[0];
     $parentPostData = getPostById($parentCommentData['post_id'])[0];
 
-    
-
-    if($parentPostData != null) {
-        if($parentCommentData != null) {
-            if(isCommentLevel2($commentId) == false) {
-                if($commentData != null) {
-                    $testsPassed = false;
-        
-                    if(strlen($commentData['formCommentCommentComment']) > 2000) {
-                        $err = "Votre commentaire dépasse les 2000 charactères";
-                    } 
-                    else if(($_FILES['formCommentCommentFile']['name']==null xor $commentData['formCommentCommentLink']==null) == false) {
-                        $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
-                    }
-                    else if(str_contains($commentData['formCommentCommentLink'], 'youtube.com') == false && $_FILES['formCommentCommentFile']['name']==null) {
-                        $err = "Veuillez utiliser un lien de vidéo youtube";
-                    } 
-                    else if (strlen($commentData['formCommentCommentLink']) > 45) {
-                        $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
-                    }
-                    else {
-                        $testsPassed = true;
-                    }   
-        
-                    if($testsPassed == true) {
-                        addCommentToComment($commentData, $_SESSION['userId'], $parentCommentData['id'], $parentCommentData['post_id'], $_FILES['formCommentCommentFile']);
-                        header("location:/index.php?action=post&id=" . $parentPostData['id']);
+    if($_SESSION != NULL) {
+        if($parentPostData != null) {
+            if($parentCommentData != null) {
+                if(isCommentLevel2($commentId) == false) {
+                    if($commentData != null) {
+                        $testsPassed = false;
+            
+                        if(strlen($commentData['formCommentCommentComment']) > 2000) {
+                            $err = "Votre commentaire dépasse les 2000 charactères";
+                        } 
+                        else if($_FILES['formCommentCommentFile']['name']!=null && $commentData['formCommentCommentLink']!=null) {
+                            $err = "Veuillez soit séléctionner un fichier soit mettre un lien de vidéo";
+                        }
+                        else if(($commentData['formCommentCommentLink'] != NULL && str_contains($commentData['formCommentCommentLink'], 'youtube.com') == false) && $_FILES['formCommentCommentFile']['name']==null) {
+                            $err = "Veuillez utiliser un lien de vidéo youtube";
+                        } 
+                        else if (strlen($commentData['formCommentCommentLink']) > 45) {
+                            $err = "Votre lien de vidéo est trop long (maximum 45 charactères)";
+                        }
+                        else {
+                            $testsPassed = true;
+                        }   
+            
+                        if($testsPassed == true) {
+                            $creationReturn = addCommentToComment($commentData, $_SESSION['userId'], $parentCommentData['id'], $parentCommentData['post_id'], $_FILES['formCommentCommentFile']);
+                            if($creationReturn == true) {
+                                header("location:/index.php?action=post&id=" . $parentPostData['id']);
+                            } else if($creationReturn == 1) {
+                                view_commentComment($parentPostData, $parentCommentData, "Le fichier inséré n'est pas une image");
+                            } else {
+                                view_commentComment($parentPostData, $parentCommentData, "Une erreur s'est produite lors de la création du commentaire");
+                            }
+                        } else {
+                            view_commentComment($parentPostData, $parentCommentData, $err);
+                        }
                     } else {
-                        view_commentComment($parentPostData, $parentCommentData, $err);
+                        view_commentComment($parentPostData, $parentCommentData);
                     }
                 } else {
-                    view_commentComment($parentPostData, $parentCommentData);
+                    view_lost("Ce commentaire a déjà été commenté", "Erreur");
                 }
             } else {
-                // Comment already commented
-
-                //temporary
-                view_lost("");
+                //Comment does not exist
+                view_lost("Ce commentaire n'existe pas", "Erreur");
             }
         } else {
-            //Comment does not exist
-            view_lost("Ce commentaire n'existe pas");
+            // parent post of comment does not exist
+            view_lost("Le post parent de ce commentaire n'existe pas", "Erreur");
         }
     } else {
-        // parent post of comment does not exist
-        view_lost("Le post parent de ce commentaire n'existe");
+        view_lost("Veuillez vous connecter pour accéder à cette page", "Erreur");
     }
 }
 
@@ -335,7 +364,7 @@ function reportTempo($id) {
             view_lost();
         } 
     } else {
-        view_lost("Veuillez vous connecter pour pouvoir signaler un post");
+        view_lost("Veuillez vous connecter pour pouvoir signaler un post", "Erreur");
     }
 }
 
@@ -352,7 +381,7 @@ function showReportedPostAndComments() {
     
         view_reported($reportedPosts, $reportedComments);
     } else {
-        view_lost();
+        view_lost("Accès administrateur requis", "403");
     }
 
     
@@ -366,15 +395,15 @@ function banReportedPost($postid) {
         if(postExists($postid)) {
             if(isPostOpen($postid) == false) {
                 banReportedPostDB($postid);
-                header("location:/index.php?action=reportedPosts");
+                header("location:/index.php?action=showReports");
             } else {
                 view_lost("Ce poste n'as pas été signalé", "Erreur");
             }
         } else {
-            view_lost();
+            view_lost("Ce poste n'existe pas", "Erreur");
         }
     } else {
-        view_lost();
+        view_lost("Accès administrateur requis", "403");
     }
 }
 
@@ -386,15 +415,15 @@ function banReportedComment($commentid) {
         if(commentExists($commentid)) {
             if(isCommentOpen($commentid) == false) {
                 banReportedCommentDB($commentid);
-                header("location:/index.php?action=reportedPosts");
+                header("location:/index.php?action=showReports");
             } else {
                 view_lost("Ce poste n'as pas été signalé", "Erreur");
             }
         } else {
-            view_lost();
+            view_lost("Ce poste n'existe pas", "Erreur");
         }
     } else {
-        view_lost();
+        view_lost("Accès administrateur requis", "403");
     }
 }
 
@@ -407,15 +436,15 @@ function allowReportedPost($postid) {
         if(postExists($postid)) {
             if(isPostOpen($postid) == false) {
                 allowReportedPostDB($postid);
-                header("location:/index.php?action=reportedPosts");
+                header("location:/index.php?action=showReports");
             } else {
                 view_lost("Ce poste n'as pas été signalé", "Erreur");
             }
         } else {
-            view_lost();
+            view_lost("Ce poste n'existe pas", "Erreur");
         }
     } else {
-        view_lost();
+        view_lost("Accès administrateur requis", "403");
     }
 }
 
@@ -427,15 +456,15 @@ function allowReportedComment($commentid) {
         if(commentExists($commentid)) {
             if(isCommentOpen($commentid) == false) {
                 allowReportedCommentDB($commentid);
-                header("location:/index.php?action=reportedPosts");
+                header("location:/index.php?action=showReports");
             } else {
                 view_lost("Ce poste n'as pas été signalé", "Erreur");
             }
         } else {
-            view_lost();
+            view_lost("Ce poste n'existe pas", "Erreur");
         }
     } else {
-        view_lost();
+        view_lost("Accès administrateur requis", "403");
     }
 }
 
@@ -503,6 +532,8 @@ function addCategory($formData) {
     
             if(strlen($formData['formAddCategoryName']) > 45) {
                 $err = "Le nom de la catégorie est trop long";
+            } if(cateogryExists($formData['formAddCategoryName'])) {
+                $err = "Cette catégorie existe déjà";
             } else {
                 $dataIsValid = true;
             }
@@ -513,17 +544,12 @@ function addCategory($formData) {
             } else {
                 view_addCategory($allCategories, $err);
             }
-            
         } else {
             view_addCategory($allCategories, null);
         }
     } else {
         view_lost("Accès non autorisé", "403");
     }
-
-    
-
-
 }
 
 #endregion
@@ -570,27 +596,23 @@ function showAllUser() {
 }
 
 function blockUser($id) {
-    // is admin, id exists, user is open, 
-    // display a list of all users who are open
-        // table
+    require_once "view/lost.php";
+    require_once "model/postManager.php";
     
-        require_once "view/lost.php";
-        require_once "model/postManager.php";
-        
-        if($_SESSION['admin'] == true) {
-            if((userExists($id))) {
-                if(userIsOpen($id)) {
-                    blockUserDB($id);
-                } else {
-                    view_lost("Cet utilisateur est déjà fermé", "Erreur");
-                }
+    if($_SESSION['admin'] == true) {
+        if((userExists($id))) {
+            if(userIsOpen($id)) {
+                blockUserDB($id);
+                header("location:/index.php?action=showUsers");
             } else {
-                view_lost("Ce poste n'existe pas", "Erreur");
+                view_lost("Cet utilisateur est déjà fermé", "Erreur");
             }
         } else {
-            view_lost("Accès interdit", "403");
+            view_lost("Ce poste n'existe pas", "Erreur");
         }
-
+    } else {
+        view_lost("Accès interdit", "403");
+    }
 }
 
 function blockPost($id) {
@@ -620,7 +642,7 @@ function blockComment($id) {
     if($_SESSION['admin'] == true) {
         if(commentExists($id)) {
             if(isCommentOpen($id)) {
-                blockCommentDB($id) ;
+                blockCommentDB($id);
                 view_lost("Ce commentaire a été bloqué, il ne sera plus visible pour les utilisateurs", "Commentaire bloqué");
             } else {
                 view_lost("Ce commentaire est déjà fermé", "Erreur");

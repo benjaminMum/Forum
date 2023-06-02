@@ -23,9 +23,14 @@ function renderGabarit($title = null, $content = null)
                     <a class="btn btn-ghost normal-case text-xl static" href="/index.php?action=home">Home</a>
                     <!-- account buttons -->
                     <div class="static justify-end w-full">
+                        <?php if($_SESSION['admin'] == true) {?>
+                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=addCategory">Ajouter un thème</a> 
+                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=showUsers">Utilisateurs</a> 
+                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=showReports">Posts signalés</a> 
+                        <?php } ?>
                         <?php if(empty($_SESSION)) { ?>
-                        <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=login">Se connecter</a>
-                        <a class="btn btn-ghost normal-case text-xl static" href="/index.php?action=register">S'enregistrer</a>
+                            <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=login">Se connecter</a>
+                            <a class="btn btn-ghost normal-case text-xl static" href="/index.php?action=register">S'enregistrer</a>
                         <?php } else { ?>
                             <a class="btn btn-ghost normal-case text-xl relative right-5" href="/index.php?action=disconnect">Déconnexion</a> 
                         <?php } ?>

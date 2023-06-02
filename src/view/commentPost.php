@@ -20,7 +20,7 @@
                 <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                     <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                     <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
-                    <button class="btn col-span-2 col-start-11 mr-2 btn-sm" >Voir</button>
+                    <button class="btn col-span-2 col-start-11 mr-2 btn-sm bg-blue-400 text-black" >Voir</button>
                 </div>
             </div>
         <?php } else { ?>
@@ -36,7 +36,7 @@
                 <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                     <p class="text-lg text-black col-span-12 row-span-1 ml-2 mt-2">Titre :</p>
                     <p class=" text-black col-span-12 row-span-4 ml-2"><?= $post['title'] ?></p>
-                    <button class="btn col-span-2 col-start-11 mr-2 btn-sm" >Voir</button>
+                    <button class="btn col-span-2 col-start-11 mr-2 btn-sm bg-blue-400 text-black" >Voir</button>
                 </div>
             </div>
         <?php } ?>

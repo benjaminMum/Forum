@@ -52,7 +52,7 @@ function openDBConnexion()
     $charset = 'utf8';
     $dbName = 'forum_db';
     $userName = 'root';
-    $userPwd = '';
+    $userPwd = 'JsuenqvaV-1515';
     $dsn = $sqlDriver . ':host=' . $hostname . ';dbname=' . $dbName . ';port=' . $port . ';charset=' . $charset;
 
     try {

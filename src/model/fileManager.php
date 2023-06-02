@@ -21,6 +21,6 @@ function insertImage($image)
         return $imgFullname;
     } else {
         return false;
-    }
-   
+    }  
 }
+

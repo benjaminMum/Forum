@@ -44,8 +44,8 @@
             </div>
         <?php } ?>
         <div class="col-span-3 col-start-10 flex flex-auto row-span-1 content-center">
-            <a href="/index.php/action=allowPost&id=<?= $post['id'] ?>" class="bg-green-500 text-white btn mr-2">Restaurer</a>
-            <a href="/index.php/action=banPost&id=<?= $post['id'] ?>" class="bg-red-500 text-white btn">Bannir</a>
+            <a href="/index.php?action=allowPost&id=<?= $post['id'] ?>" class="bg-green-500 text-white btn mr-2">Restaurer</a>
+            <a href="/index.php?action=banPost&id=<?= $post['id'] ?>" class="bg-red-500 text-white btn">Bannir</a>
         </div>
     <?php } ?>
     <div class="divider col-span-7 col-start-2">Commentaires signalés</div> 
@@ -76,11 +76,11 @@
                     <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment['text'] ?></p>
                     </div>
-                </div>
+                </div>x§
             <?php } ?>
             <div class="col-span-3 col-start-10 flex flex-auto row-span-1 content-center">
-                <a href="/index.php/action=allowComment&id=<?= $post['id'] ?>" class="bg-green-500 text-white btn mr-2">Restaurer</a>
-                <a href="/index.php/action=banComment&id=<?= $post['id'] ?>" class="bg-red-500 text-white btn">Bannir</a>
+                <a href="/index.php?action=allowComment&id=<?= $post['id'] ?>" class="bg-green-500 text-white btn mr-2">Restaurer</a>
+                <a href="/index.php?action=banComment&id=<?= $post['id'] ?>" class="bg-red-500 text-white btn">Bannir</a>
             </div>
         <?php } ?>
 </div>

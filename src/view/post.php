@@ -5,10 +5,10 @@
 
 ?>
 
-<div class="grid grid-cols-12">
+<div class="grid grid-cols-12 w-1/2 mt-10">
     <!-- Post -->
     <?php if(str_contains($post['image_link'], "./view")) {?>
-        <div class="grid grid-cols-12 col-span-5 col-start-3 grid-rows-6 gap-1 h-48">
+        <div class="grid grid-cols-12 col-span-8 col-start-2 grid-rows-6 gap-1 h-48">
             <div class="col-span-4 row-span-6 bg-cyan-50 rounded-md flex flex-col">
                 <img class="w-full object-contain min-h-0" src="<?= $post['image_link']?>">
             </div> 
@@ -21,13 +21,17 @@
                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $post['title'] ?></p>
             </div>
             <div class="flex flex-nowrap col-span-12 row-span-1 justify-end mr-1 gap-1">
+                <?php if($_SESSION['admin'] == true) { ?>
+                    <a class="btn btn-secondary btn-xs" href="/index.php?action=archivePost&postid=<?= $post['id'] ?>">Archiver</a>
+                    <a class="btn btn-xs" href="/index.php?action=blockPost&postid=<?= $post['id'] ?>">Bloquer</a>
+                <?php } ?>
                 <a class="btn btn-error btn-xs" href="/index.php?action=reportTempo&postid=<?= $post['id'] ?>">Signaler</a>
                 <a class="btn btn-xs" href="/index.php?action=commentPost&id=<?= $post['id']?>">Commenter</a>
             </div>
         </div>
         <div class="divider col-span-9 col-start-2 mt-3 mb-3"></div>
     <?php } else { ?>
-        <div class="grid grid-cols-12 col-span-5 col-start-3 grid-rows-6 gap-1 h-48">
+        <div class="grid grid-cols-12 col-span-8 col-start-2 grid-rows-6 gap-1 h-48">
             <div class="grid grid-cols-3 col-span-12 row-span-1 mb-1 bg-slate-300 rounded-md">
                 <p class="text-left col-span-1 text-black ml-2">Utilisateur : <?= getUsernameById($post['user_id']) ?> </p>
                 <p class="text-center col-span-2 col-start-2 text-black ml-2">le <?= $post['date'] ?></p>
@@ -40,11 +44,12 @@
                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $post['title'] ?></p>
             </div>
             <div class="flex flex-nowrap col-span-12 row-span-1 justify-end mr-1 gap-1">
-                <a class="btn btn-error btn-xs" href="/index.php?action=archivePost&postid=<?= $post['id'] ?>">Archiver</a>
-                <a class="btn btn-error btn-xs" href="/index.php?action=blockPost&postid=<?= $post['id'] ?>">Bloquer</a>
-
+                <?php if($_SESSION['admin'] == true) { ?>
+                    <a class="btn btn-secondary btn-xs" href="/index.php?action=archivePost&postid=<?= $post['id'] ?>">Archiver</a>
+                    <a class="btn btn-xs" href="/index.php?action=blockPost&postid=<?= $post['id'] ?>">Bloquer</a>
+                <?php } ?>
                 <a class="btn btn-error btn-xs" href="/index.php?action=reportTempo&postid=<?= $post['id'] ?>">Signaler</a>
-                <a class="btn btn-xs" href="/index.php?action=commentPost&id=<?= $post['id']?>">Commenter</a>
+                <a class="btn bg-blue-400 btn-xs text-black" href="/index.php?action=commentPost&id=<?= $post['id']?>">Commenter</a>
             </div>
         </div>
         <div class="divider col-span-9 col-start-2 mt-3 mb-3"></div>
@@ -55,7 +60,7 @@
     <?php foreach($comments as $comment1) {?>
         <?php if($comment1['comment_id'] == null) {?>
             <?php if(str_contains($comment1['image_link'], "./view")) {?>
-                <div class="grid grid-cols-12 col-span-5 col-start-4 grid-rows-6 gap-1 h-48 mt-5">
+                <div class="grid grid-cols-12 col-span-8 col-start-4 grid-rows-6 gap-1 h-48 mt-5">
                     <div class="col-span-4 row-span-6 bg-cyan-50 rounded-md flex flex-col">
                         <img class="w-full object-contain min-h-0" src="<?= $comment1['image_link']?>">
                     </div> 
@@ -65,13 +70,17 @@
                     </div>
                     <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment1['text'] ?></p>
-                        <a class="btn btn-error col-span-2 col-start-9 mr-1 mt-5 btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment1['id'] ?>">Signaler</a>
-                        <a class="btn col-span-2 col-start-11 mr-1 mt-5 btn-xs" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
-
+                        <div class="flex flex-nowrap col-span-12 row-span-1 justify-end mr-1 gap-1">
+                            <?php if($_SESSION['admin'] == true) { ?>
+                            <a class="btn btn-xs" href="/index.php?action=blockComment&id=<?= $comment1['id'] ?>">Bloquer</a>
+                            <?php } ?>
+                            <a class="btn btn-error btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment1['id'] ?>">Signaler</a>
+                            <a class="btn bg-blue-400 btn-xs text-black" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
+                        </div>
                     </div>
                 </div>
             <?php } else { ?>
-                <div class="grid grid-cols-12 col-span-5 col-start-4 grid-rows-6 gap-1 h-48 mt-5">
+                <div class="grid grid-cols-12 col-span-8 col-start-4 grid-rows-6 gap-1 h-48 mt-5">
                     <div class="grid grid-cols-3 col-span-12 row-span-1 mb-1 bg-slate-300 rounded-md">
                         <p class="text-left col-span-1 text-black ml-2">Utilisateur : <?= getUsernameById($comment1['user_id']) ?> </p>
                         <p class="text-center col-span-2 col-start-2 text-black ml-2">le <?= $comment1['date'] ?></p>
@@ -81,8 +90,13 @@
                     </div>
                     <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                         <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment1['text'] ?></p>
-                        <a class="btn btn-error col-span-2 col-start-9 mr-1 mt-3 btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment1['id'] ?>">Signaler</a>
-                        <a class="btn col-span-2 col-start-11 mr-1 mt-3 btn-xs" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
+                        <div class="flex flex-nowrap col-span-12 row-span-1 justify-end mr-1 gap-1">
+                            <?php if($_SESSION['admin'] == true) { ?>
+                            <a class="btn btn-xs" href="/index.php?action=blockComment&id=<?= $comment1['id'] ?>">Bloquer</a>
+                            <?php } ?>
+                            <a class="btn btn-error btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment1['id'] ?>">Signaler</a>
+                            <a class="btn bg-blue-400 btn-xs text-black" href="/index.php?action=commentComment&id=<?= $comment1['id']?>">Commenter</a>
+                        </div>
                     </div>
                 </div>
             <?php } ?>
@@ -90,7 +104,7 @@
             <?php foreach($comments as $comment2) {?>
                 <?php if($comment2['comment_id'] == $comment1['id']) {?>
                     <?php if(str_contains($comment2['image_link'], "./view")) {?>
-                        <div class="grid grid-cols-12 col-span-5 col-start-5 grid-rows-6 gap-1 h-48 mt-5">
+                        <div class="grid grid-cols-12 col-span-8 col-start-5 grid-rows-6 gap-1 h-48 mt-5">
                             <div class="col-span-4 row-span-6 bg-cyan-50 rounded-md flex flex-col">
                                 <img class="w-full object-contain min-h-0" src="<?= $comment2['image_link']?>">
                             </div> 
@@ -100,11 +114,16 @@
                             </div>
                             <div class="grid grid-cols-12 grid-row-6 col-span-8 row-span-5 bg-slate-300 rounded-md">
                                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment2['text'] ?></p>
-                                <a class="btn btn-error col-span-2 col-start-11 mr-1 mt-3 btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment2['id'] ?>">Signaler</a>
+                                <div class="flex flex-nowrap col-span-12 row-span-1 justify-end mr-1 gap-1">
+                                    <?php if($_SESSION['admin'] == true) { ?>
+                                    <a class="btn btn-xs" href="/index.php?action=blockComment&id=<?= $comment2['id'] ?>">Bloquer</a>
+                                    <?php } ?>
+                                    <a class="btn btn-error btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment2['id'] ?>">Signaler</a>
+                                </div>
                             </div>
                         </div>
                     <?php } else { ?>
-                        <div class="grid grid-cols-12 col-span-5 col-start-5 grid-rows-6 gap-1 h-48 mt-5">
+                        <div class="grid grid-cols-12 col-span-8 col-start-5 grid-rows-6 gap-1 h-48 mt-5">
                             <div class="grid grid-cols-3 col-span-12 row-span-1 mb-1 bg-slate-300 rounded-md">
                                 <p class="text-left col-span-1 text-black ml-2">Utilisateur : <?= getUsernameById($comment2['user_id']) ?> </p>
                                 <p class="text-center col-span-2 col-start-2 text-black ml-2">le <?= $comment2['date'] ?></p>
@@ -114,7 +133,12 @@
                             </div>
                             <div class="grid grid-cols-12 grid-row-6 col-span-12 row-span-4 bg-slate-300 rounded-md">
                                 <p class=" text-black col-span-12 row-span-4 ml-2 overflow-y-auto"><?= $comment2['text'] ?></p>
-                                <a class="btn btn-error col-span-2 col-start-11 mr-1 mt-3 btn-xs" href="/index.php?action=reportcommentTempo&id=<?= $comment2['id'] ?>">Signaler</a>
+                                <div class="flex flex-nowrap col-span-12 row-span-1 justify-end mr-1 gap-1">
+                                    <?php if($_SESSION['admin'] == true) { ?>
+                                    <a class="btn btn-xs" href="/index.php?action=blockComment&id=<?= $comment2['id'] ?>">Bloquer</a>
+                                    <?php } ?>
+                                    <a class="btn btn-error btn-xs" href="/index.php?action=reportTempo&commentid=<?= $comment2['id'] ?>">Signaler</a>
+                                </div>
                             </div>
                         </div>
                     <?php } ?>
